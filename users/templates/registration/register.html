@@ -1,0 +1,97 @@
+{% extends "account_logs/base.html" %}
+
+{% block page_header %}
+  {% endblock page_header %}
+
+{% block content %}
+<style>
+  /* Reusing the same styles from the login page for consistency */
+  .auth-card {
+    max-width: 480px;
+    margin: 3rem auto;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
+  }
+  .auth-card .card-header {
+    background-color: transparent;
+    border-bottom: none;
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-weight: 600;
+  }
+  .auth-card .form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+  .auth-card .btn {
+    padding: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  .auth-card .card-footer {
+    background-color: transparent;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+  }
+  .form-error-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+</style>
+
+<div class="auth-card card">
+  <h2 class="card-header h3">Create Your Account</h2>
+
+  <div class="card-body px-4 py-5">
+    <form method="post" action="{% url 'users:register' %}">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger p-2" role="alert">
+          <ul class="form-error-list mb-0">
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% for field in form %}
+        <div class="mb-3">
+          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+          <input 
+            type="{{ field.field.widget.input_type }}" 
+            name="{{ field.name }}" 
+            id="{{ field.id_for_label }}" 
+            class="form-control {% if field.errors %}is-invalid{% endif %}" 
+            required
+          >
+          {% if field.help_text %}
+            <div class="form-text">{{ field.help_text|safe }}</div>
+          {% endif %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback d-block">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="d-grid mt-4">
+        <button name="submit" class="btn btn-primary btn-lg">Register</button>
+      </div>
+
+      <input type="hidden" name="next" value="{% url 'account_logs:account_logs' %}" />
+    </form>
+  </div>
+  
+  <div class="card-footer text-muted py-3">
+    Already have an account? <a href="{% url 'users:login' %}">Log In</a>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends "account_logs/base.html" %}
+
+{% block page_header %}
+  {% endblock page_header %}
+
+{% block content %}
+<style>
+  .logout-container {
+    max-width: 600px;
+    margin: 5rem auto;
+    padding: 3rem;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  }
+  .logout-icon svg {
+    width: 72px;
+    height: 72px;
+    color: #1DB954; /* Matches the navbar's primary green */
+    margin-bottom: 1.5rem;
+  }
+  .logout-container h2 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #343a40;
+  }
+  .logout-container .lead {
+    color: #6c757d;
+    margin-bottom: 2rem;
+  }
+  .logout-actions .btn {
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    border-radius: 50px;
+  }
+</style>
+
+<div class="logout-container">
+  <div class="logout-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+  </div>
+  <h2>You have been logged out.</h2>
+  <p class="lead">
+    Your session has ended securely. Thank you for visiting!
+  </p>
+  <div class="logout-actions d-grid gap-3 d-sm-flex justify-content-sm-center">
+    <a href="{% url 'users:login' %}" class="btn btn-primary">Log In Again</a>
+    <a href="{% url 'account_logs:index' %}" class="btn btn-outline-secondary">Go to Homepage</a>
+  </div>
+</div>
+
+{% endblock content %}

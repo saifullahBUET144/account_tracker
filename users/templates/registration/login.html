@@ -1,0 +1,77 @@
+{% extends "account_logs/base.html" %}
+
+{% block page_header %}
+  {% endblock page_header %}
+
+{% block content %}
+<style>
+  .login-card {
+    max-width: 450px;
+    margin: 3rem auto;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09);
+  }
+  .login-card .card-header {
+    background-color: transparent;
+    border-bottom: none;
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-weight: 600;
+  }
+  .login-card .form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+  .login-card .btn {
+    padding: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  .login-card .card-footer {
+    background-color: transparent;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+  }
+</style>
+
+<div class="login-card card">
+  <h2 class="card-header h3">Log In to Your Account</h2>
+
+  <div class="card-body px-4 py-5">
+    <form method="post" action="{% url 'users:login' %}">
+      {% csrf_token %}
+      
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+        <input type="text" name="username" id="{{ form.username.id_for_label }}" class="form-control" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+        <input type="password" name="password" id="{{ form.password.id_for_label }}" class="form-control" required>
+      </div>
+
+      <div class="d-grid">
+        <button name="submit" class="btn btn-primary btn-lg">Log In</button>
+      </div>
+
+      <input type="hidden" name="next" value="{% url 'account_logs:account_logs' %}" />
+    </form>
+  </div>
+  
+  <div class="card-footer text-muted py-3">
+    Don't have an account? <a href="{% url 'users:register' %}">Sign up now</a>
+  </div>
+</div>
+
+{% endblock content %}
