@@ -1,4 +1,4 @@
-# Account Tracker
+# Account Expense Tracker
 
 A full-featured Django web application for managing financial accounts and tracking transactions. This app allows users to register, create multiple accounts, and log inflows and expenses with receipt uploads for each transaction.
 
