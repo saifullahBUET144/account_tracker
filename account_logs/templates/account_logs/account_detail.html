@@ -38,6 +38,11 @@
     width: 18px;
     height: 18px;
   }
+
+  #receiptImage {
+  max-height: 80vh; /* 80% of the viewport's height */
+  object-fit: contain;
+}
 </style>
 
 <div class="account-header d-flex justify-content-between align-items-center">
@@ -140,7 +145,12 @@
             </div>
           {% if transaction.receipt %}
             <div class="mt-2 text-end">
-              <a href="{{ transaction.get_cloudinary_url }}" class="card-link small">View Receipt</a>
+            <a href="#" class="card-link small" 
+              data-bs-toggle="modal" 
+              data-bs-target="#receiptModal" 
+              data-image-url="{{ transaction.get_cloudinary_url }}">
+              View Receipt
+            </a>
             </div>
           {% endif %}
         </div>
@@ -187,7 +197,6 @@
   </div>
 </div>
 
-
 <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -211,23 +220,37 @@
   </div>
 </div>
 
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="receiptModalLabel">Transaction Receipt</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="" id="receiptImage" class="img-fluid" alt="Receipt Image">
+      </div>
+    </div>
+  </div>
+</div>
 <script>
-  // Get the modal
+  // Delete Transaction Modal
   const deleteTransactionModal = document.getElementById('deleteTransactionModal');
-  
-  // Listen for the event when the modal is about to be shown
   deleteTransactionModal.addEventListener('show.bs.modal', function (event) {
-    // Get the button that triggered the modal
     const button = event.relatedTarget;
-    
-    // Extract the URL from the data-delete-url attribute
     const deleteUrl = button.getAttribute('data-delete-url');
-    
-    // Get the form inside the modal
     const deleteForm = document.getElementById('deleteTransactionForm');
-    
-    // Update the form's action attribute with the correct URL
     deleteForm.setAttribute('action', deleteUrl);
+  });
+
+  // Receipt Image Modal 
+  const receiptModal = document.getElementById('receiptModal');
+  receiptModal.addEventListener('show.bs.modal', function (event) {
+
+    const link = event.relatedTarget;
+    const imageUrl = link.getAttribute('data-image-url');
+    const receiptImage = document.getElementById('receiptImage');
+    receiptImage.setAttribute('src', imageUrl);
   });
 </script>
 {% endblock javascript %}

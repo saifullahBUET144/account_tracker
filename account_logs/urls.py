@@ -16,13 +16,11 @@ urlpatterns = [
     path('new_account/', views.new_account, name='new_account'),
     # Page for adding a new transaction.
     path('new_transaction/<int:account_id>/', views.new_transaction, name='new_transaction'),
-    # Page for adding a new inflow.
-    path('account_logs/<int:account_id>/new_transaction/', views.new_transaction, name='new_transaction'),
     # Page for editing a transaction.
     path('edit_transaction/<int:transaction_id>/', views.edit_transaction, name='edit_transaction'),
-    # Add this new path for deleting a transaction
+    # Deleting a transaction
     path('delete_transaction/<int:transaction_id>/', views.delete_transaction, name='delete_transaction'),
-    # Page for deleting an existing account.
+    # Deleting an existing account.
     path('delete_account/<int:account_id>/', views.delete_account, name='delete_account'),
 
 ]

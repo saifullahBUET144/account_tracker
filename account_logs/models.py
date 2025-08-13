@@ -88,12 +88,9 @@ class Transaction(models.Model):
         Manually constructs the Cloudinary URL.
         """
         if self.receipt:
-            # Get the cloud name from the same environment variable as settings.py
             cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME')
-            # The 'receipt' field now stores the public_id, e.g., 'receipts/abcdef'
             public_id = self.receipt.name
             
             # Construct the full URL
-            # The 'f_auto,q_auto' part helps optimize the image delivery
             return f"https://res.cloudinary.com/{cloud_name}/image/upload/f_auto,q_auto/{public_id}"
         return None

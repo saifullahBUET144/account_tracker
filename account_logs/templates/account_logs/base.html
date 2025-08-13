@@ -14,12 +14,12 @@
 
 
   <style>
-    /* === GLOBAL THEME === */
+
     body {
       background-color: #f8f9fa; 
     }
 
-    /* === NAVBAR STYLES === */
+    /* NAVBAR STYLES */
     :root {
       --nav-bg: #121212;
       --nav-surface: #1e1e1e;
@@ -57,8 +57,6 @@
       color: var(--nav-text-primary);
     }
 
-    /* THIS RULE IS THE FIX: */
-    /* It applies the underline effect to nav-links that are NOT dropdown-toggles */
     .navbar .nav-link:not(.dropdown-toggle)::after {
       content: '';
       position: absolute;
@@ -73,7 +71,7 @@
       width: 100%;
     }
 
-    /* Dark theme for the user dropdown menu */
+    /* user dropdown menu */
     .navbar .dropdown-menu {
       background-color: var(--nav-surface);
       border-color: var(--nav-surface);

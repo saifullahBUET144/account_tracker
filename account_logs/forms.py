@@ -23,7 +23,6 @@ class AccountForm(forms.ModelForm):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        # Add 'transaction_type' to the list of fields.
         fields = ['transaction_type', 'amount', 'source_or_destination',
                   'description', 'date', 'receipt']
         labels = {
