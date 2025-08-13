@@ -17,7 +17,7 @@ def index(request):
 @login_required
 def accounts(request):
     """Show all accounts belonging to the current user."""
-    accounts = Account.objects.filter(owner=request.user).order_by('date_created')
+    accounts = Account.objects.filter(owner=request.user).order_by('-date_created')
     context = {'accounts': accounts}
     return render(request, 'account_logs/account_logs.html', context)
 

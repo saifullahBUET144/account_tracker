@@ -1,0 +1,1 @@
+web: gunicorn account_log.wsgi:application --bind 0.0.0.0:$PORT

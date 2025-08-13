@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 import dj_database_url
 from pathlib import Path
@@ -21,12 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+wba85-5d&t4%20_6uj6!e8kme(v9^*r2tnh2_8owvh5$c+wq!'
+SECRET_KEY = os.environ.get('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'True'
 
 ALLOWED_HOSTS = ['account-tracker-django.onrender.com']
+
+if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
+
 CSRF_TRUSTED_ORIGINS = ['https://account-tracker-django.onrender.com']
 
 
@@ -87,13 +95,17 @@ WSGI_APPLICATION = 'account_log.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Get the database URL from the environment variable
-        default=os.environ.get('DATABASE_URL'),
-        # Set connection options for production
-        conn_max_age=600,
-        ssl_require=True
+        default=os.environ.get('DATABASE_URL')
     )
 }
+
+if DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql':
+    DATABASES['default'].update({
+        'CONN_MAX_AGE': 600,
+        'OPTIONS': {
+            'sslmode': 'require',
+        }
+    })
 
 
 # Password validation
