@@ -154,6 +154,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Login settings
 LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'account_logs:account_logs'
+LOGOUT_REDIRECT_URL = 'account_logs:index'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
