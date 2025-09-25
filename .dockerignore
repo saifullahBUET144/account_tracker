@@ -1,0 +1,26 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Environment variables
+.env
+
+# Local database files
+db.sqlite3
+db.sqlite3-journal
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+al_env/
+
+# macOS
+.DS_Store
+

@@ -24,18 +24,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY') 
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 
-ALLOWED_HOSTS = ['account-tracker-django.onrender.com']
+ALLOWED_HOSTS = []
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 if DEBUG:
     ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
-CSRF_TRUSTED_ORIGINS = ['https://account-tracker-django.onrender.com']
+CSRF_TRUSTED_ORIGINS = []
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
 
 
 # Application definition
@@ -43,8 +45,8 @@ CSRF_TRUSTED_ORIGINS = ['https://account-tracker-django.onrender.com']
 INSTALLED_APPS = [
 
     # My Apps
-    'account_logs',
-    'users',
+    'account_logs.apps.AccountLogsConfig',
+    'users.apps.UsersConfig',
 
     # Third-party apps
     'bootstrap4',
@@ -165,3 +167,4 @@ CLOUDINARY_STORAGE = {
 
 # Set Cloudinary as the default file storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+

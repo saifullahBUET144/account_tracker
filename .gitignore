@@ -7,6 +7,8 @@ db.sqlite3
 # Python cache files
 __pycache__/
 *.pyc
+staticfiles/ 
+receipts/
 
 # macOS system files
 .DS_Store
