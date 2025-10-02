@@ -20,16 +20,20 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install coverage # Install coverage in the workflow
 
-      - name: Run Django tests
-        run: python manage.py test
+      - name: Run Django tests with coverage
+        run: coverage run manage.py test
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: 'False'
-          DATABASE_URL: 'sqlite:///db.sqlite3' # Use SQLite for tests
+          DATABASE_URL: 'sqlite:///db.sqlite3'
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+
+      - name: Generate coverage report
+        run: coverage report --fail-under=80 # Fails if coverage is below 80%
 
   build_and_deploy:
     needs: test # only runs if the 'test' job succeeds
