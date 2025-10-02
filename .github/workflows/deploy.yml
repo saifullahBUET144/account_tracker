@@ -1,11 +1,38 @@
-name: Build and Deploy to Render
+name: Test, Build, and Deploy to Render
 
 on:
   push:
     branches:
-      - main 
+      - main
+
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Django tests
+        run: python manage.py test
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: 'False'
+          DATABASE_URL: 'sqlite:///db.sqlite3' # Use SQLite for tests
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+
   build_and_deploy:
+    needs: test # only runs if the 'test' job succeeds
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,10 +48,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64 # Corrected from 'platform' to 'platforms'
+          platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/account-tracker:latest
 
       - name: Trigger Render deploy hook
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-
